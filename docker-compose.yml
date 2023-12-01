@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+
+  shopbd:
+    build: postgres/
+    restart: always
+    ports:
+      - "127.0.0.1:8000:5432"
+    container_name: shopBD
+    volumes:
+      - ./postgres/postgresData:/var/lib/postgresql/data/shopInfo
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      
+  productserv:
+    build: golang/product/
+    restart: always
+    ports:
+      - "127.0.0.1:8010:8010"
+    container_name: productService
+    volumes:
+      - ./golang/product/productServiceData:/usr/src/app
+    depends_on:
+      - shopbd
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8010/"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgresData:
+  productServiceData:
