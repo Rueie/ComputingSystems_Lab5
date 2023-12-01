@@ -7,4 +7,6 @@
 /golang/inventory/inventoryService_module
 /golang/notification/notificationServiceData/*
 /golang/notification/notificationService_module
+/golang/order/orderServiceData/*
+/golang/order/orderService_module
 info.txt

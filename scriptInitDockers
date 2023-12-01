@@ -1,4 +1,7 @@
 #! /bin/bash
+sudo docker stop orderService
+sudo docker rm orderService
+sudo docker rmi lw5-orderserv
 sudo docker stop productService
 sudo docker rm productService
 sudo docker rmi lw5-productserv

@@ -120,6 +120,25 @@ services:
           cpus: '1'
           memory: 500MiB
 
+  orderserv:
+    build: golang/order/
+    restart: always
+    container_name: orderService
+    ports:
+      - "127.0.0.1:8013:8013"
+    depends_on:
+      rmqbd:
+        condition: service_healthy
+      keydb:
+        condition: service_healthy
+    volumes:
+      - ./golang/order/orderServiceData:/usr/src/app
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50MiB
+
 volumes:
   postgresData:
   productServiceData:
@@ -127,3 +146,4 @@ volumes:
   RMQ:
   notificationServiceData:
   KDBdata:
+  orderServiceData:
