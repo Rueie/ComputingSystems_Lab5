@@ -1,4 +1,4 @@
-module invetoryService_module
+module productsService_module
 
 go 1.19
 

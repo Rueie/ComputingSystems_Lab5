@@ -3,6 +3,8 @@ sudo docker rm productService
 sudo docker rmi lw5-productserv
 sudo docker rm inventoryService
 sudo docker rmi lw5-inventoryserv
+sudo docker rm notificationServer
+sudo docker rmi lw5-notificationserv
 sudo docker rm shopBD
 sudo docker rmi lw5-shopbd
 sudo docker rm rmqServer

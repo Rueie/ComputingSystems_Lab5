@@ -1,6 +1,9 @@
 /postgres/postgresData/*
+/RMQ/*
 /golang/product/productServiceData/*
-/golang/product/invetoryService_module
+/golang/product/productsService_module
 /golang/inventory/inventoryServiceData/*
 /golang/inventory/inventoryService_module
+/golang/notification/notificationServiceData/*
+/golang/notification/notificationService_module
 info.txt

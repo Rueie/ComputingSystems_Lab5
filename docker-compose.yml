@@ -15,6 +15,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 500MiB
       
   productserv:
     build: golang/product/
@@ -25,12 +30,18 @@ services:
     volumes:
       - ./golang/product/productServiceData:/usr/src/app
     depends_on:
-      - shopbd
+      shopbd:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8010/"]
       interval: 5s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50MiB
     
   inventoryserv:
     build: golang/inventory/
@@ -41,21 +52,56 @@ services:
     volumes:
       - ./golang/inventory/inventoryServiceData:/usr/src/app
     depends_on:
-      - shopbd
+      shopbd:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8011/"]
       interval: 5s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50MiB
 
-  rmqBD:
+  rmqbd:
     image: rabbitmq
     restart: always
     ports:
       - "127.0.0.1:5672:5672"
     container_name: rmqServer
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 5
+    volumes:
+      - ./RMQ:/var/lib/rabbitmq
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 500MiB
+
+  notificationserv:
+    build: golang/notification/
+    restart: always
+    container_name: notificationServer
+    depends_on:
+      rmqbd:
+        condition: service_healthy
+    volumes:
+      - ./golang/notification/notificationServiceData:/usr/src/app
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50MiB
 
 volumes:
   postgresData:
   productServiceData:
   inventoryServiceData:
+  RMQ:
+  notificationServiceData:
