@@ -1,4 +1,7 @@
 #! /bin/bash
+sudo docker stop graphQLservice
+sudo docker rm graphQLservice
+sudo docker rmi lw5-graphqlserv
 sudo docker stop orderService
 sudo docker rm orderService
 sudo docker rmi lw5-orderserv

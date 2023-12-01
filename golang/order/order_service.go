@@ -112,6 +112,7 @@ func handlerAddOrder(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		rs := bytes.NewReader(prodInve)
+		fmt.Println("Request to check the availability of product in stock")
 		conn, err := http.Post("http://inventoryserv:8011/sub_inv", "application/json", rs)
 		if err != nil {
 			fmt.Println(err)
@@ -129,6 +130,7 @@ func handlerAddOrder(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		var connMs Mess
+		fmt.Println("A response was received regarding the availability of product in stock")
 		err = json.Unmarshal(connBody, &connMs)
 		if err != nil {
 			fmt.Println(err)
@@ -170,6 +172,7 @@ func handlerAddOrder(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, product := range redisInfo.List {
 		if product.State == "done" {
+			fmt.Println("Sending a notification about the reservation of products to the warehouse")
 			Info := "Зарезервировано <" + strconv.Itoa(product.Number) + "><" + product.Name + "> для заказа <" + uuid.Must(id, err).String() + ">"
 			newctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			err = ch.PublishWithContext(newctx,

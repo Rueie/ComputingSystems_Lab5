@@ -33,7 +33,7 @@ services:
       shopbd:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8010/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8010/get_products"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -133,6 +133,30 @@ services:
         condition: service_healthy
     volumes:
       - ./golang/order/orderServiceData:/usr/src/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8013/get_orders"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 50MiB
+
+  graphqlserv:
+    build: golang/graphQL/
+    restart: always
+    container_name: graphQLservice
+    ports:
+      - "127.0.0.1:8014:8014"
+    depends_on:
+      productserv:
+        condition: service_healthy
+      orderserv:
+        condition: service_healthy
+    volumes:
+      - ./golang/graphQL/graphQLServiceData:/usr/src/app
     deploy:
       resources:
         limits:
@@ -147,3 +171,4 @@ volumes:
   notificationServiceData:
   KDBdata:
   orderServiceData:
+  graphQLServiceData:

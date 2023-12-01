@@ -9,4 +9,6 @@
 /golang/notification/notificationService_module
 /golang/order/orderServiceData/*
 /golang/order/orderService_module
+/golang/graphQL/graphQLServiceData/*
+/golang/graphQL/graphQLService_module
 info.txt
