@@ -1,5 +1,6 @@
 /postgres/postgresData/*
 /RMQ/*
+/KDB/*
 /golang/product/productServiceData/*
 /golang/product/productsService_module
 /golang/inventory/inventoryServiceData/*

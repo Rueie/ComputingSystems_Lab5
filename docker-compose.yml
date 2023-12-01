@@ -7,7 +7,7 @@ services:
     restart: always
     ports:
       - "127.0.0.1:8000:5432"
-    container_name: shopBD
+    container_name: shopBDserver
     volumes:
       - ./postgres/postgresData:/var/lib/postgresql/data/shopInfo
     healthcheck:
@@ -69,7 +69,7 @@ services:
     image: rabbitmq
     restart: always
     ports:
-      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:8001:5672"
     container_name: rmqServer
     healthcheck:
       test: rabbitmq-diagnostics -q ping
@@ -87,7 +87,9 @@ services:
   notificationserv:
     build: golang/notification/
     restart: always
-    container_name: notificationServer
+    container_name: notificationService
+    ports:
+      - "127.0.0.1:8012:8012"
     depends_on:
       rmqbd:
         condition: service_healthy
@@ -98,6 +100,25 @@ services:
         limits:
           cpus: '1'
           memory: 50MiB
+        
+  keydb:
+    image: eqalpha/keydb
+    restart: always
+    ports:
+      - "127.0.0.1:8002:6379"
+    container_name: keyDBserver
+    volumes:
+      - ./KDB/KDBdata:/data
+    healthcheck:
+      test: redis-cli ping
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 500MiB
 
 volumes:
   postgresData:
@@ -105,3 +126,4 @@ volumes:
   inventoryServiceData:
   RMQ:
   notificationServiceData:
+  KDBdata:
