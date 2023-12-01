@@ -1,2 +1,6 @@
 /postgres/postgresData/*
 /golang/product/productServiceData/*
+/golang/product/invetoryService_module
+/golang/inventory/inventoryServiceData/*
+/golang/inventory/inventoryService_module
+info.txt

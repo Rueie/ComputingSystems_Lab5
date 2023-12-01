@@ -1,4 +1,4 @@
-module invetoryService_module
+module inventoryService_module
 
 go 1.19
 

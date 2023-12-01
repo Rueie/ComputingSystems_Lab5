@@ -31,7 +31,24 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    
+  inventoryserv:
+    build: golang/inventory/
+    restart: always
+    ports:
+      - "127.0.0.1:8011:8011"
+    container_name: inventoryService
+    volumes:
+      - ./golang/inventory/inventoryServiceData:/usr/src/app
+    depends_on:
+      - shopbd
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8011/"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgresData:
   productServiceData:
+  inventoryServiceData:

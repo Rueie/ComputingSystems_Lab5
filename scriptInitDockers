@@ -1,0 +1,8 @@
+#! /bin/bash
+sudo docker rm productService
+sudo docker rmi lw5-productserv
+sudo docker rm shopBD
+sudo docker rmi lw5-shopbd
+sudo docker rm inventoryService
+sudo docker rmi lw5-inventoryserv
+sudo docker compose up
